@@ -6,8 +6,6 @@ module.exports.ReactionPages = require("./data/functions/embedpages");
 
 module.exports.confirmation = require("./data/functions/confirmation");
 
-module.exports.timeout = require("./data/functions/timeout");
-
 module.exports.reconDB = require("./data/db/reconDB");
 
 module.exports.chatBot = require("./data/functions/chatBot");
