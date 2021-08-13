@@ -31,13 +31,13 @@ class Game {
                 if (this.send_message == true) {
                     let grid = await this.ttt_grid()
                     if (this.players_go == 0) {
-                        this.ttt_message =  await this.message.channel.send('<@' + this.message.author.id + '> it is your turn\n' + grid)
+                        this.ttt_message =  await this.message.channel.send('<@' + this.message.author.id + '> É sua vez\n' + grid)
                         for (let i in this.reactions) {
                             this.ttt_message.react(this.reactions[i])
                         }
                     }
                     else {
-                        this.ttt_message.edit('<@' + this.message.author.id + '> é sua vez\n' + grid)
+                        this.ttt_message.edit('<@' + this.message.author.id + '> É sua vez\n' + grid)
                     }
                 }
                 this.ttt_message.awaitReactions((reaction, user) => user.id == this.message.author.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣'),
@@ -70,7 +70,7 @@ class Game {
             if (this.players_go % 2  == 1) {
                 if (this.send_message == true) {
                     let grid = await this.ttt_grid()
-                    this.ttt_message.edit('<@' + this.player_two.id + '> é sua vez\n' + grid)
+                    this.ttt_message.edit('<@' + this.player_two.id + '> É sua vez\n' + grid)
                     this.ttt_message.awaitReactions((reaction, user) => user.id == this.player_two.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣'),
                     { max: 1, time: 30000 }).then(async collected => {
                         this.reaction = collected.first().emoji.name
@@ -130,7 +130,7 @@ class Game {
             }
             if (this.players_go == 9 && step_one == 7) {
                 let grid = await this.ttt_grid()
-                this.ttt_message.edit('Perdeste!\n' + grid)
+                this.ttt_message.edit('Empate!\n' + grid)
                 this.end_game(this.player_two, this.message)
             }
         }
