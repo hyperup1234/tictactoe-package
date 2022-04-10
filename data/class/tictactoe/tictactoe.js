@@ -31,17 +31,19 @@ class Game {
                 if (this.send_message == true) {
                     let grid = await this.ttt_grid()
                     if (this.players_go == 0) {
-                        this.ttt_message =  await this.message.channel.send('<@' + this.message.author.id + '> É a tua vez\n' + grid)
+                        this.ttt_message =  await this.message.channel.send({ content: '<@' + this.message.author.id + '> É a tua vez\n' + grid })
                         for (let i in this.reactions) {
                             this.ttt_message.react(this.reactions[i])
                         }
                     }
                     else {
-                        this.ttt_message.edit('<@' + this.message.author.id + '> É a tua vez\n' + grid)
+                        this.ttt_message.edit({ content: '<@' + this.message.author.id + '> É a tua vez\n' + grid })
                     }
                 }
-                this.ttt_message.awaitReactions((reaction, user) => user.id == this.message.author.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣'),
-                { max: 1, time: 3000000 }).then(async collected => {
+                const filter = (reaction, user) => {
+                    return user.id == this.message.author.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣');
+                };
+                this.ttt_message.awaitReactions({ filter, max: 1, time: 3000000 }).then(async collected => {
                     this.reaction = collected.first().emoji.name
                     if (this.reaction == '1️⃣') this.user_input = 0
                     if (this.reaction == '2️⃣') this.user_input = 1
@@ -63,16 +65,18 @@ class Game {
                 }
                 }
                 ).catch(() => {
-                    this.ttt_message.edit('O jogo expirou')
+                    this.ttt_message.edit({ content: 'O jogo expirou' })
                     this.end_game(this.player_two, this.message)
                 })
             }
             if (this.players_go % 2  == 1) {
                 if (this.send_message == true) {
                     let grid = await this.ttt_grid()
-                    this.ttt_message.edit('<@' + this.player_two.id + '> É a tua vez\n' + grid)
-                    this.ttt_message.awaitReactions((reaction, user) => user.id == this.player_two.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣'),
-                    { max: 1, time: 30000 }).then(async collected => {
+                    this.ttt_message.edit({ content: '<@' + this.player_two.id + '> É a tua vez\n' + grid})
+                    const filter2 = (reaction, user) => {
+                        return user.id == this.player_two.id && (reaction.emoji.name == '1️⃣' || reaction.emoji.name == '2️⃣' || reaction.emoji.name == '3️⃣' || reaction.emoji.name == '4️⃣' || reaction.emoji.name == '5️⃣' || reaction.emoji.name == '6️⃣' || reaction.emoji.name == '7️⃣' || reaction.emoji.name == '8️⃣' || reaction.emoji.name == '9️⃣');
+                    };
+                    this.ttt_message.awaitReactions({ filter2, max: 1, time: 30000 }).then(async collected => {
                         this.reaction = collected.first().emoji.name
                         if (this.reaction == '1️⃣') this.user_input = 0
                         if (this.reaction == '2️⃣') this.user_input = 1
@@ -94,7 +98,7 @@ class Game {
                     }
                     }
                     ).catch(() => {
-                        this.ttt_message.edit('O jogo expirou')
+                        this.ttt_message.edit({ content: 'O jogo expirou' })
                         this.end_game(this.player_two, this.message)
                     })
                 }
@@ -120,17 +124,17 @@ class Game {
             step_one++
             if (this.grid[win_combinations[step_one][0]] == ':negative_squared_cross_mark:' && this.grid[win_combinations[step_one][1]] == ':negative_squared_cross_mark:' && this.grid[win_combinations[step_one][2]] == ':negative_squared_cross_mark:') {
                 let grid = await this.ttt_grid()
-                this.ttt_message.edit('<@' + this.message.author.id + '> Ganhaste!\n' + grid)
+                this.ttt_message.edit({ content: '<@' + this.message.author.id + '> Ganhaste!\n' + grid })
                 this.end_game(this.player_two, this.message)
             }
             if (this.grid[win_combinations[step_one][0]] == ':regional_indicator_o:' && this.grid[win_combinations[step_one][1]] == ':regional_indicator_o:' && this.grid[win_combinations[step_one][2]] == ':regional_indicator_o:') {
                 let grid = await this.ttt_grid()
-                this.ttt_message.edit('<@' + this.player_two.id + '> Ganhaste!\n' + grid)
+                this.ttt_message.edit({ content: '<@' + this.player_two.id + '> Ganhaste!\n' + grid })
                 this.end_game(this.player_two, this.message)
             }
             if (this.players_go == 9 && step_one == 7) {
                 let grid = await this.ttt_grid()
-                this.ttt_message.edit('Empate!\n' + grid)
+                this.ttt_message.edit({ content: 'Empate!\n' + grid })
                 this.end_game(this.player_two, this.message)
             }
         }
